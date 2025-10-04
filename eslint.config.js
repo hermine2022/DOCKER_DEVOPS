@@ -1,21 +1,43 @@
 // eslint.config.js
-module.exports = [
+import js from "@eslint/js";
+import globals from "globals";
+
+export default [
+  // Config recommandée par ESLint
+  js.configs.recommended,
+
+  // Fichiers JS standards
   {
     files: ["**/*.js"],
     languageOptions: {
-      ecmaVersion: 12,
-      sourceType: "script",
+      sourceType: "commonjs",
       globals: {
-        console: "readonly",
-        process: "readonly",
-        module: "readonly",
-        require: "readonly",
-        __dirname: "readonly"
-      }
+        ...globals.node,
+        ...globals.browser,
+      },
     },
     rules: {
       "no-unused-vars": "warn",
-      "no-console": "off"
-    }
-  }
+      "no-console": "off",
+    },
+  },
+
+  // Fichiers de test
+  {
+    files: ["**/*.test.js", "**/*.spec.js", "tests/**/*.js"],
+    languageOptions: {
+      globals: {
+        ...globals.node,
+        ...globals.jest,
+        describe: "readonly",
+        it: "readonly",
+        expect: "readonly",
+        test: "readonly",
+        beforeEach: "readonly",
+        afterEach: "readonly",
+        beforeAll: "readonly",
+        afterAll: "readonly",
+      },
+    },
+  },
 ];
